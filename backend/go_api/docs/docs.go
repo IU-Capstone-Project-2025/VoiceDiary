@@ -15,11 +15,11 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/records/{recordID}/analyze": {
+        "/records/upload": {
             "post": {
-                "description": "Fetches the data_url for the record, sends it to the ML service, and returns the result.",
+                "description": "Uploads a voice file, sends it to the ML service for analysis, and saves the record.",
                 "consumes": [
-                    "application/json"
+                    "multipart/form-data"
                 ],
                 "produces": [
                     "application/json"
@@ -27,13 +27,20 @@ const docTemplate = `{
                 "tags": [
                     "records"
                 ],
-                "summary": "Analyze a record",
+                "summary": "Upload  a new voice record",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Record ID",
-                        "name": "recordID",
-                        "in": "path",
+                        "description": "User ID",
+                        "name": "userID",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Voice file",
+                        "name": "file",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -41,11 +48,14 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/client.AnalysisResult"
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "integer"
+                            }
                         }
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "type": "object",
                             "additionalProperties": {
@@ -102,34 +112,14 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "client.AnalysisResult": {
+        "repository.Record": {
             "type": "object",
             "properties": {
                 "emotion": {
                     "type": "string"
                 },
-                "themes": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
-                "tone": {
-                    "type": "string"
-                }
-            }
-        },
-        "repository.Record": {
-            "type": "object",
-            "properties": {
-                "data_url": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
-                },
-                "mood": {
-                    "type": "string"
                 },
                 "record_date": {
                     "type": "string"

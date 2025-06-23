@@ -35,7 +35,7 @@ func main() {
 
 	recordHandler := handler.NewRecordHandler(db, cfg.MLServiceURL)
 	r.GET("/users/:userID/records", recordHandler.GetRecords)
-	r.POST("/records/:recordID/analyze", recordHandler.AnalyzeRecord)
+	r.POST("/records/upload", recordHandler.UploadRecord)
 
 	r.GET("/swagger/*any",
     ginSwagger.WrapHandler(swaggerFiles.Handler, 

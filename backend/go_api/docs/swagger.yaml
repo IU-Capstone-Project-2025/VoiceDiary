@@ -1,4 +1,17 @@
 definitions:
+  handler.RegisterRequest:
+    properties:
+      login:
+        type: string
+      nickname:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - nickname
+    - password
+    type: object
   repository.Record:
     properties:
       emotion:
@@ -77,4 +90,31 @@ paths:
       summary: Get user records
       tags:
       - records
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/handler.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register a new user
 swagger: "2.0"

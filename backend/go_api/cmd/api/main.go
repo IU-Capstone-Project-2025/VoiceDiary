@@ -44,7 +44,6 @@ func main() {
 	r.POST("/records/upload", recordHandler.UploadRecord)
 	r.POST("/users/register", userHandler.Register)
 
-
 	r.GET("/swagger/*any",
     ginSwagger.WrapHandler(swaggerFiles.Handler, 
         ginSwagger.URL("/swagger/doc.json"),

@@ -75,13 +75,22 @@ const docTemplate = `{
                 "tags": [
                     "records"
                 ],
+
                 "summary": "Get analysis result for a record.",
+
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Record ID",
-                        "name": "recordID",
-                        "in": "path",
+                        "description": "User ID",
+                        "name": "userID",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "Voice file",
+                        "name": "file",
+                        "in": "formData",
                         "required": true
                     }
                 ],

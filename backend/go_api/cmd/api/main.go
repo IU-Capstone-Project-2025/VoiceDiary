@@ -39,9 +39,11 @@ func main() {
 	userService := service.NewUserService(db)
 	userHandler := handler.NewUserHandler(userService)
 
+	r.GET("/records/:recordID", recordHandler.GetRecordAnalysis)
 	r.GET("/users/:userID/records", recordHandler.GetRecords)
 	r.POST("/records/upload", recordHandler.UploadRecord)
 	r.POST("/users/register", userHandler.Register)
+
 
 	r.GET("/swagger/*any",
     ginSwagger.WrapHandler(swaggerFiles.Handler, 

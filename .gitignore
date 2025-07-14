@@ -4,3 +4,11 @@ venv/
 
 # Machine learning testing outputs
 ml/outputs/
+
+# SSL-ключи
+nginx/ssl/*.key
+nginx/ssl/*.pem
+nginx/ssl/*.pfx
+certificates/
+*.crt
+*.key

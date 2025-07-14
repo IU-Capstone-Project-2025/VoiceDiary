@@ -15,6 +15,16 @@ function RecordingCard({ result }) {
     }
   );
 
+  const renderInsightSection = (title, content, renderFn) => {
+    if (!content || (Array.isArray(content) && content.length === 0)) return null;
+    return (
+      <div className="card-section">
+        <h3>{title}</h3>
+        {renderFn(content)}
+      </div>
+    );
+  };
+
   return (
     <div className="recording-card">
       <div className="card-header">
@@ -101,7 +111,7 @@ function RecordingCard({ result }) {
         </ol>
       </div> */}
 
-      {result.insights && (
+      {/* {result.insights && (
         <>
           <div className="card-section">
             <h3>Emotional Analysis</h3>
@@ -170,6 +180,84 @@ function RecordingCard({ result }) {
       {!result.insights && (
         <div className="card-section">
           <p>Loading detailed analysis...</p>
+        </div>
+      )} */}
+
+      {result.insights ? (
+        <>
+          {renderInsightSection("Emotional Analysis", result.insights.emotional_dynamics, (content) => (
+            <div className="insights-grid">
+              <div className="insight-item">
+                <h4>Pattern</h4>
+                <p>{content || "No pattern data available"}</p>
+              </div>
+              {result.insights.key_triggers?.length > 0 && (
+                <div className="insight-item">
+                  <h4>Key Triggers</h4>
+                  <ul>
+                    {result.insights.key_triggers.map((trigger, index) => (
+                      <li key={index}>{trigger}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {renderInsightSection("Physical Responses", result.insights.physical_reactions, (reactions) => (
+            <div className="physical-responses">
+              {reactions?.morning && (
+                <div>
+                  <span role="img" aria-label="Morning">🌞</span>
+                  <p>{reactions.morning}</p>
+                </div>
+              )}
+              {reactions?.afternoon && (
+                <div>
+                  <span role="img" aria-label="Afternoon">🌆</span>
+                  <p>{reactions.afternoon}</p>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {renderInsightSection("Coping Strategies", result.insights.coping_effectiveness, (strategies) => (
+            <div className="strategy-boxes">
+              {strategies?.successful && (
+                <div className="strategy successful">
+                  <h4>What worked</h4>
+                  <p>{strategies.successful}</p>
+                </div>
+              )}
+              {strategies?.unsuccessful && (
+                <div className="strategy unsuccessful">
+                  <h4>What didn't</h4>
+                  <p>{strategies.unsuccessful}</p>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {result.insights.recommendations?.length > 0 && (
+            <div className="card-section">
+              <h3>Recommendations</h3>
+              <ol className="recommendations-list">
+                {result.insights.recommendations.map((rec, index) => {
+                  const [title, ...descParts] = rec.split(":");
+                  const description = descParts.join(":").trim();
+                  return (
+                    <li key={index}>
+                      <strong>{title}:</strong> {description}
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="card-section">
+          <p>Detailed analysis is being processed...</p>
         </div>
       )}
 

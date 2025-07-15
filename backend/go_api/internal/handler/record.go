@@ -70,16 +70,17 @@ func (h *RecordHandler) UploadRecord(c *gin.Context) {
 	}
 
 	// Save record in DB
-	if userID != -1 {
-        recordID, err := h.svc.SaveRecord(c.Request.Context(), userID, emotion, summary)
-        if err != nil {
-            log.Printf("UploadRecord: failed to save record, error: %v", err)
-            c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save record"})
-            return
-        }
-    } else {
-        recordID = -1
-    }
+// 	if userID != -1 {
+//         recordID, err := h.svc.SaveRecord(c.Request.Context(), userID, emotion, summary)
+//         if err != nil {
+//             log.Printf("UploadRecord: failed to save record, error: %v", err)
+//             c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save record"})
+//             return
+//         }
+//     } else {
+//         recordID = -1
+//     }
+    var recordID = -1
 
 	c.JSON(http.StatusOK, gin.H{
 		"user_id": userID,
